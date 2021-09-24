@@ -84,4 +84,7 @@ class ConnectFourBoard(object):
         return True
 
     def to_array(self):
-        pass
+        p1_board = np.where(self._board == 1, 1, 0)
+        p2_board = np.where(self._board == 2, 1, 0)
+
+        return np.stack([p1_board, p2_board], axis=2).astype(np.float)

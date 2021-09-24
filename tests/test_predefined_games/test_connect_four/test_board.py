@@ -6,6 +6,12 @@ def test_board_creation():
 
     assert board.get_symbols() == [0]
 
+def test_board_array_shape():
+
+    board = ConnectFourBoard()
+
+    assert board.to_array().shape == (6, 7, 2)
+
 def test_board_has_win_vert_1():
 
     board = ConnectFourBoard()
