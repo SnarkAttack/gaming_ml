@@ -33,7 +33,7 @@ class ConnectFourGame(Game):
         """
         Valid states:
         0 for game continuation
-        plater symbol for player having achieved a victory
+        player id for player having achieved a victory
         -1 for a stalemate
         """
         if self._game_board.has_stalemate():
