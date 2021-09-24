@@ -1,0 +1,1 @@
+STALEMATE = 3
