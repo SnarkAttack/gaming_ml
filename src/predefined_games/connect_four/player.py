@@ -4,10 +4,11 @@ from .action import PlaceDiscAction
 
 class ConnectFourPlayer(Player):
 
-    def __init__(self, code, symbol):
+    def __init__(self, code, symbol, id=-1):
         super().__init__()
         self._code = code
         self._symbol = symbol
+        self._id = id
 
     @property
     def code(self):
@@ -16,6 +17,14 @@ class ConnectFourPlayer(Player):
     @property
     def symbol(self):
         return self._symbol
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, id):
+        self._id = id
 
     def get_next_move(self):
         if self.code == HUMAN_CODE:

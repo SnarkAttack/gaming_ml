@@ -1,3 +1,4 @@
+from .defines import STALEMATE
 from ...game import Game, PendingAction
 from .action import PlaceDiscAction
 from .board import ConnectFourBoard
@@ -11,6 +12,10 @@ class ConnectFourGame(Game):
     def setup_game(self):
         for player in self._players:
             self._pending_actions.append(PendingAction(player))
+
+    def add_player(self, player):
+        super().add_player(player)
+        self.id = len(self._players)
 
     def perform_action(self, action):
         if isinstance(action, PlaceDiscAction):
@@ -32,7 +37,7 @@ class ConnectFourGame(Game):
         -1 for a stalemate
         """
         if self._game_board.has_stalemate():
-            return 's'
+            return STALEMATE
         elif state := self._game_board.has_winner():
             return state
         else:
