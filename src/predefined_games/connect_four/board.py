@@ -5,7 +5,7 @@ class ConnectFourBoard(object):
     def __init__(self, row_count=6, col_count=7):
         self._row_count = row_count
         self._col_count = col_count
-        self._board = np.full([row_count, col_count], ' ', dtype=np.unicode_)
+        self._board = np.full([row_count, col_count], 0)
 
     @property
     def row_count(self):
@@ -22,28 +22,28 @@ class ConnectFourBoard(object):
         return np.unique(self._board)
 
     def lowest_open_row(self, col):
-        open_rows = np.where(col!=' ')[0]
+        open_rows = np.where(col!=0)[0]
         if len(open_rows) == 0:
             open_row_idx = self._row_count
         else:
             open_row_idx = open_rows[0]
         return open_row_idx - 1
 
-    def add_disc(self, symbol, col_num):
+    def add_disc(self, id, col_num):
         col = self._board[:,col_num]
         open_row_idx = self.lowest_open_row(col)
-        col[open_row_idx] = symbol
+        col[open_row_idx] = id
 
     def get_open_columns(self):
-        return np.where(self._board[0] == ' ')[0].tolist()
+        return np.where(self._board[0] == 0)[0].tolist()
 
     def _check_board_winner(self, board):
-        symbols = list(np.unique(board))
-        if ' ' in symbols:
-            symbols.remove(' ')
+        vals = list(np.unique(board))
+        if 0 in vals:
+            vals.remove(0)
 
-        for symbol in symbols:
-            locations = np.where(board == symbol)
+        for val in vals:
+            locations = np.where(board == val)
             list_of_coords = list(zip(locations[0], locations[1]))
             list_of_coords.sort(key=lambda t: (-t[0], t[1]))
 
@@ -63,23 +63,28 @@ class ConnectFourBoard(object):
                         has_won = True
 
                 if has_won:
-                    return symbol
+                    return val
 
-        return  ' '
+        return 0
 
     def has_winner(self):
         return self._check_board_winner(self._board)
 
     def has_stalemate(self):
         symbols = list(np.unique(self._board))
-        if ' ' in symbols:
-            symbols.remove(' ')
+        if 0 in symbols:
+            symbols.remove(0)
 
         for symbol in symbols:
-            best_board = np.where(self._board == ' ', symbol, self._board)
+            best_board = np.where(self._board == 0, symbol, self._board)
 
-            if self._check_board_winner(best_board) != ' ':
+            if self._check_board_winner(best_board) != 0:
                 return False
 
         return True
 
+    def to_array(self):
+        p1_board = np.where(self._board == 1, 1, 0)
+        p2_board = np.where(self._board == 2, 1, 0)
+
+        return np.stack([p1_board, p2_board], axis=2).astype(np.float)

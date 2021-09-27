@@ -1,9 +1,7 @@
 from .action import PlaceDiscAction
 from .game import ConnectFourGame
 from .player import ConnectFourPlayer
-
-HUMAN_CODE = 0
-COMPUTER_CODE = 1
+from game.utilities import HUMAN_CODE, COMPUTER_CODE
 
 class ConnectFourInterface(object):
 
@@ -26,17 +24,7 @@ class ConnectFourInterface(object):
         self._game.print_board()
 
         player = self._game.get_next_player()
-        if player.code == HUMAN_CODE:
-            choice = None
-            available_columns = self._game.get_valid_columns()
-            print(f"Player {player.symbol}, what column would you like to play in?\n")
-            while choice not in available_columns:
-                try:
-                    choice = int(input(f"Select from the following list: {available_columns}\t"))
-                except Exception:
-                    print("Invalid input")
-            game_state = self._game.perform_action(PlaceDiscAction(player, choice))
-            return game_state
+        return player.get_next_move()
 
     def _get_symbol_input(self, player_code=None):
 
